@@ -34,6 +34,43 @@ type Reserve struct {
 
 func main() {
 
+
+
+	// read .env variables
+	RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS,GAS_MULTIPLIER := readEnvVariables()
+
+
+	web3GolangHelper := initWeb3(RPC_URL, WS_URL)
+	fromAddress := GeneratePublicAddressFromPrivateKey(PK)
+
+	// convert buy amount to float
+
+	// infinite loop
+	for {
+		// get pair address
+		lpPairAddress := getPair(web3GolangHelper, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS)
+		fmt.Println("LP Pair Address: " + lpPairAddress)
+
+		if lpPairAddress != "0x0000000000000000000000000000000000000000" {
+			reserves := getReserves(web3GolangHelper, lpPairAddress)
+
+			fmt.Println("Reserve0: " + reserves.Reserve0.String())
+			fmt.Println("Reserve1: " + reserves.Reserve1.String())
+
+			// check if reserves is greater than 0
+			if reserves.Reserve0.Cmp(big.NewInt(0)) > 0 && reserves.Reserve1.Cmp(big.NewInt(0)) > 0 {
+				buyAmount, err := strconv.ParseFloat(BUY_AMOUNT, 32)
+				if err != nil {
+					fmt.Println(err)
+				}
+				web3GolangHelper.Buy(ROUTER_ADDRESS, WETH_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount, GAS_MULTIPLIER)
+				os.Exit(0)
+			}
+		}
+		// sleep 1 second
+		time.Sleep(1 * time.Millisecond)
+	}
+	
 	database.Connect()
 
 	app := fiber.New()
@@ -48,40 +85,6 @@ func main() {
 	fmt.Println("Application started...")
 	app.Listen(fmt.Sprintf(":%s", PORT))
 
-	// read .env variables
-	// RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS := readEnvVariables()
-
-
-	// web3GolangHelper := initWeb3(RPC_URL, WS_URL)
-	// fromAddress := GeneratePublicAddressFromPrivateKey(PK)
-
-	// // convert buy amount to float
-
-	// // infinite loop
-	// for {
-	// 	// get pair address
-	// 	lpPairAddress := getPair(web3GolangHelper, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS)
-	// 	fmt.Println("LP Pair Address: " + lpPairAddress)
-
-	// 	if lpPairAddress != "0x0000000000000000000000000000000000000000" {
-	// 		reserves := getReserves(web3GolangHelper, lpPairAddress)
-
-	// 		fmt.Println("Reserve0: " + reserves.Reserve0.String())
-	// 		fmt.Println("Reserve1: " + reserves.Reserve1.String())
-
-	// 		// check if reserves is greater than 0
-	// 		if reserves.Reserve0.Cmp(big.NewInt(0)) > 0 && reserves.Reserve1.Cmp(big.NewInt(0)) > 0 {
-	// 			buyAmount, err := strconv.ParseFloat(BUY_AMOUNT, 32)
-	// 			if err != nil {
-	// 				fmt.Println(err)
-	// 			}
-	// 			web3GolangHelper.Buy(ROUTER_ADDRESS, WETH_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount)
-	// 			os.Exit(0)
-	// 		}
-	// 	}
-	// 	// sleep 1 second
-	// 	time.Sleep(1 * time.Millisecond)
-	// }
 }
 
 func OpenBrowser(url string) {
@@ -103,13 +106,13 @@ func OpenBrowser(url string) {
 }
 
 // function for read .env variables
-func readEnvVariables() (string, string, string, string, string, string, string, string) {
+func readEnvVariables() (string, string, string, string, string, string, string, string, string) {
 	// load .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-
+	
 	RPC_URL := os.Getenv("RPC_URL")
 	WS_URL := os.Getenv("WS_URL")
 	WETH_ADDRESS := os.Getenv("WETH_ADDRESS")
@@ -118,8 +121,8 @@ func readEnvVariables() (string, string, string, string, string, string, string,
 	PK := os.Getenv("PK")
 	BUY_AMOUNT := os.Getenv("BUY_AMOUNT")
 	ROUTER_ADDRESS := os.Getenv("ROUTER_ADDRESS")
-
-	return RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS
+	GAS_MULTIPLIER := os.Getenv("GAS_MULTIPLIER")
+	return RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS, GAS_MULTIPLIER
 }
 
 func initWeb3(rpcUrl, wsUrl string) *web3helper.Web3GolangHelper {
