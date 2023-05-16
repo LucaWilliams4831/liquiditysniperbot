@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/controllers"
+	"github.com/LucaWilliams4831/liquiditysniperbot/controllers"
 
 	"github.com/gofiber/fiber/v2"
 )

@@ -1,10 +1,10 @@
-module github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot
+module github.com/LucaWilliams4831/liquiditysniperbot
 
 go 1.19
 
 require (
 	github.com/ethereum/go-ethereum v1.10.26
-	github.com/nikola43/web3golanghelper v0.0.0-20230108163011-1077d4a22ec8
+	github.com/LucaWilliams4831/web3golanghelper v0.0.1
 )
 
 require (

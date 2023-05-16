@@ -16,8 +16,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	// "github.com/golang-jwt/jwt/v4"
 
-	"github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/database"
-	"github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/models"
+	"github.com/LucaWilliams4831/liquiditysniperbot/database"
+	"github.com/LucaWilliams4831/liquiditysniperbot/models"
 )
 
 type Account struct {

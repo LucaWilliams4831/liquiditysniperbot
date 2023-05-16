@@ -16,11 +16,11 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/joho/godotenv"
-	pancakeFactory "github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/contracts/IPancakeFactory"
-	pancakePair "github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/contracts/IPancakePair"
-	"github.com/nikola43/web3golanghelper/web3helper"
-	"github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/database"
-	"github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/routes"
+	pancakeFactory "github.com/LucaWilliams4831/liquiditysniperbot/contracts/IPancakeFactory"
+	pancakePair "github.com/LucaWilliams4831/liquiditysniperbot/contracts/IPancakePair"
+	"github.com/LucaWilliams4831/web3golanghelper/web3helper"
+	"github.com/LucaWilliams4831/liquiditysniperbot/database"
+	"github.com/LucaWilliams4831/liquiditysniperbot/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

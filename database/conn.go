@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/LucaWilliams4831/uniswap-pancakeswap-tradingbot/liquiditysniperbot/models"
+	"github.com/LucaWilliams4831/liquiditysniperbot/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
