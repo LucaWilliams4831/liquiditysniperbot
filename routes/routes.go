@@ -14,7 +14,8 @@ func Setup(app *fiber.App) {
 
 
 	//Account routes
-	app.Get("api/v1/account/get_all", controllers.GetAccounts)
+	app.Post("api/v1/bot/start_bot", controllers.StartBot)
+	app.Post("api/v1/account/get_all", controllers.GetAccounts)
 	app.Get("api/v1/account/filter/:keyword", controllers.FilterAccounts)
 	app.Post("api/v1/account/update/:id", controllers.UpdateAccount)
 	app.Post("api/v1/account/sendfee/:id", controllers.SendFee)
