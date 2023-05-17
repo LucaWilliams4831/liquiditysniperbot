@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"os"
+	
 
 	"github.com/LucaWilliams4831/liquiditysniperbot/models"
 
@@ -13,21 +13,21 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-
-	HOST := os.Getenv("HOST")
-	DBUSER := os.Getenv("DBUSER")
-	PASSWORD := os.Getenv("PASSWORD")
-	DBNAME := os.Getenv("DBNAME")
-	PORT := os.Getenv("DB_PORT")
+	
+	HOST := "localhost"
+	DBUSER := "postgres"
+	PASSWORD := "postgres"
+	DBNAME := "bdjuno"
+	PORT := "5432"
 	
 	config := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", HOST, PORT, DBUSER, PASSWORD, DBNAME)
-	
+	fmt.Println(config)
 	connection, err := gorm.Open(postgres.Open(config), &gorm.Config{})
 
 	if err != nil {
 		panic("could not connect to the database")
 	}
-	fmt.Println("Database connected...")
+	
 	DB = connection
 
 	connection.AutoMigrate(&models.Admin{},&models.Account{}) 

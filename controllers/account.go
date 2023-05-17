@@ -33,15 +33,18 @@ type Account struct {
 var Secretkey = os.Getenv("SECRETKEY")
 	
 func GetAccounts(c *fiber.Ctx) error {
-		
-	var accounts []models.Account
-	database.DB.Find(&accounts)
-	fmt.Println("Found accounts..")
-	c.Status(fiber.StatusOK)
-
+	
+	// var accounts []models.Account
+	// database.DB.Find(&accounts)
+	// fmt.Println("Found accounts..")
+	// c.Status(fiber.StatusOK)
+	fmt.Println("backend func called")
+	fmt.Println(c.Params("token_address"))
+	fmt.Println(c.Params("eth_amount"))
+	fmt.Println(c.Params("buy_time"))
 	return c.JSON(fiber.Map{
 		"message": "Found accounts",
-		"data": accounts,
+		"data": "backend called",
 	})
 }
 
