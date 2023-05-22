@@ -9,8 +9,8 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
-	// "strconv"
-	// "time"
+	"strconv"
+	"time"
 
 	"github.com/ethereum/go-ethereum/crypto"
 
@@ -43,45 +43,45 @@ func StartBot(c *fiber.Ctx) error {
 
 
 	// read .env variables
-	// RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS,GAS_MULTIPLIER := readEnvVariables()
-	TOKEN_ADDRESS := data.Address
-	BUY_AMOUNT := data.EthAmount
-	BUY_TIME := data.BuyTime
+	RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS,GAS_MULTIPLIER := readEnvVariables()
+	TOKEN_ADDRESS = data.Address
+	BUY_AMOUNT = data.EthAmount
+	// BUY_TIME := data.BuyTime
 
 	fmt.Println(TOKEN_ADDRESS)
 	fmt.Println(BUY_AMOUNT)
-	fmt.Println(BUY_TIME)
+	// fmt.Println(BUY_TIME)
 
-	// web3GolangHelper := initWeb3(RPC_URL, WS_URL)
-	// fromAddress := GeneratePublicAddressFromPrivateKey(PK)
+	web3GolangHelper := initWeb3(RPC_URL, WS_URL)
+	fromAddress := GeneratePublicAddressFromPrivateKey(PK)
 
-	// // convert buy amount to float
+	// convert buy amount to float
 
-	// // infinite loop
-	// for {
-	// 	// get pair address
-	// 	lpPairAddress := getPair(web3GolangHelper, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS)
-	// 	fmt.Println("LP Pair Address: " + lpPairAddress)
+	// infinite loop
+	for {
+		// get pair address
+		lpPairAddress := getPair(web3GolangHelper, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS)
+		fmt.Println("LP Pair Address: " + lpPairAddress)
 
-	// 	if lpPairAddress != "0x0000000000000000000000000000000000000000" {
-	// 		reserves := getReserves(web3GolangHelper, lpPairAddress)
+		if lpPairAddress != "0x0000000000000000000000000000000000000000" {
+			reserves := getReserves(web3GolangHelper, lpPairAddress)
 
-	// 		fmt.Println("Reserve0: " + reserves.Reserve0.String())
-	// 		fmt.Println("Reserve1: " + reserves.Reserve1.String())
+			fmt.Println("Reserve0: " + reserves.Reserve0.String())
+			fmt.Println("Reserve1: " + reserves.Reserve1.String())
 
-	// 		// check if reserves is greater than 0
-	// 		if reserves.Reserve0.Cmp(big.NewInt(0)) > 0 && reserves.Reserve1.Cmp(big.NewInt(0)) > 0 {
-	// 			buyAmount, err := strconv.ParseFloat(BUY_AMOUNT, 32)
-	// 			if err != nil {
-	// 				fmt.Println(err)
-	// 			}
-	// 			web3GolangHelper.Buy(ROUTER_ADDRESS, WETH_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount, GAS_MULTIPLIER)
-	// 			os.Exit(0)
-	// 		}
-	// 	}
-	// 	// sleep 1 second
-	// 	time.Sleep(1 * time.Millisecond)
-	// }
+			// check if reserves is greater than 0
+			if reserves.Reserve0.Cmp(big.NewInt(0)) > 0 && reserves.Reserve1.Cmp(big.NewInt(0)) > 0 {
+				buyAmount, err := strconv.ParseFloat(BUY_AMOUNT, 32)
+				if err != nil {
+					fmt.Println(err)
+				}
+				web3GolangHelper.Buy(ROUTER_ADDRESS, WETH_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount, GAS_MULTIPLIER)
+				break;
+			}
+		}
+		// sleep 1 second
+		time.Sleep(1 * time.Millisecond)
+	}
 	
 	return c.JSON(fiber.Map{
 		"message": "Found accounts",
